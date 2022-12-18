@@ -11,7 +11,7 @@ import (
 
 func Initialize() {
 	initializers.ConnectToDB()
-	initializers.DB.AutoMigrate(&models.Task{})
+	initializers.DB.AutoMigrate(&models.Task{})//need to be done once only
 }
 
 
@@ -27,9 +27,9 @@ func main() {
 
 	//route handlers - api endpoints
 	router.HandleFunc("/mux-check", MuxCheck).Methods("GET")
-	router.HandleFunc("/tasks", routes.GetAllTasks).Methods("GET")
+	router.HandleFunc("{project}/tasks", routes.GetAllTasksForProject).Methods("GET")
 	router.HandleFunc("/task/{id}", routes.GetTaskByID).Methods("GET")
-	router.HandleFunc("/addTask", routes.AddTask).Methods("POST")
+	router.HandleFunc("/{project}/addTask", routes.AddTask).Methods("POST")
 	router.HandleFunc("/updateTask/{id}", routes.UpdateTask).Methods("PUT")
 	router.HandleFunc("/deleteTask/{id}", routes.DeleteTask).Methods("DELETE")
 	http.ListenAndServe(":8000", router)
